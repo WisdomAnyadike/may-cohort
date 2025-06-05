@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="search" id="userInput" oninput="searchProducts()">
+
+    <div id="preview">
+        <p><button id="button1">Garri</button> </p>
+        <p> <button id="button2">Beans</button> </p>
+        <p> <button id="button3">Egg</button> </p>
+        <p> <button id="button4">Rice</button> </p>
+        
+        
+    </div>
+
+</body>
+
+</html>
+<script>
+    foodstuff = [document.getElementById('button1'), document.getElementById('button2'), document.getElementById('button3'), document.getElementById('button4'),]
+
+    function searchProducts() {
+        let input = document.getElementById('userInput').value.toLowerCase()
+
+        const foundFood = foodstuff.filter(food =>
+            food.innerHTML.toLowerCase().includes(input)
+        )
+
+        // [    ]
+
+
+        if (foundFood.length === 0) {
+            preview.innerHTML = 'product does not exist'
+        } else {
+            preview.innerHTML = ''
+            foundFood.forEach(element => {
+                preview.innerHTML += ` <p> <button> ${element.innerHTML} </button> </p> `
+            });
+        }
+
+    }
+
+</script>

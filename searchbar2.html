@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="search" id="userInput" oninput="searchProducts()">
+
+    <div id="preview">
+
+    </div>
+
+</body>
+
+</html>
+<script>
+    let preview = document.getElementById('preview')
+    let products = ['rice', 'beans', 'egg', 'garri']
+
+
+    function display(commodities) {
+        preview.innerHTML = ''
+        // commodities.forEach((commodity) => {
+        //     preview.innerHTML += `<p> <button> ${commodity} </button> </p>`
+        // })
+        for (let index = 0; index < commodities.length; index++) {
+            preview.innerHTML += `<p> <button> ${commodities[index]} </button> </p>`
+        }
+    }
+
+    display(products)
+
+
+    function searchProducts() {
+        let filteredProducts = products.filter((product) => {
+            return product.includes(userInput.value.toLowerCase().trim())
+        })
+        if (filteredProducts.length === 0) {
+            preview.innerHTML = 'product does not exist'
+        } else {
+            display(filteredProducts)
+        }
+    }
+
+
+ 
+
+
+</script>

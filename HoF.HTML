@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    // foreach map find findIndex filter  some every  reduce
+
+    let arr = [2, 3, 4, 5, 6, 7]
+    let arrOfFoods = ['rize', 'beans', 'jollof']
+
+    // for (let index = 0; index < arr.length; index++) {
+    //     console.log(arr[index]);
+
+    // }
+
+    let myfoods = arrOfFoods.forEach((food, i, a) => {
+        console.log(food, a);
+        return 'hello'
+    })
+
+    console.log(myfoods);
+
+    console.log('after foreach');
+
+    //[2,2,2]
+    let myfoods2 = arrOfFoods.map((food, i, a) => {
+        console.log(food, a);
+        return 2
+    })
+
+    console.log([3, 3, 3].concat(myfoods2));
+    //[2,2,2,3,3,3]
+
+
+    // let arrFunc = () => {
+
+    // }
+
+
+    // function hello(params) {
+    //     return 'y'
+    // }
+
+    // console.log(hello());
+
+    let users = [
+        {
+            name: 'ezekiel',
+            email: 'win@gmail.com',
+            password: 'maddo'
+        },
+
+        {
+            name: 'itiayo',
+            email: 'winohna@gmail.com',
+            password: 'mabnsdo'
+        }
+
+    ]
+
+    // let currentUser =   {
+    //         name: 'ezekiel',
+    //         email: 'win@gmail.com',
+    //         password: 'maddo'
+    //     }
+
+
+    //input email // win@gmail.com
+    // password // mabnso
+
+    let currentUser = users.find((user, index) => {
+        console.log(user, index);
+
+        return user.email === 'win@gmail.com'
+    })
+
+    console.log(currentUser);
+
+
+    let arr1 = ['2', '3', 7, '9', '19', '7']
+
+    let myNumber = arr1.find((num, i) => {
+        return typeof num === 'number'
+    })
+
+    console.log(myNumber);
+
+
+    let doesAfoodIncludeZ = arrOfFoods.every((food) => {
+        console.log(food);
+        return food.includes('z')
+    })
+
+    console.log(doesAfoodIncludeZ);
+
+
+
+
+    let nums = ['i', 'am', 'wisdom']
+    let sum = 0
+    for (let index = 0; index < nums.length; index++) {
+        // sum = sum + nums[index]
+        sum += nums[index]
+    }
+    console.log(sum);
+
+    let sum1 = nums.reduce((a, c) => { return a + `${c} ` }, 'hello, ')
+    console.log(sum1);
+
+
+</script>
