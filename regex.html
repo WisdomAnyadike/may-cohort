@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <label for="password"> password </label>
+    <input id="fem" type="text" oninput="testValue()">
+    <br>
+    <small id="error"> </small>
+
+
+    <input type="file" id="picturePicker">
+    <img src="" id="image" width="200" height="200" alt="">
+
+</body>
+
+</html>
+<script>
+
+    picturePicker.addEventListener('change', showPic)
+
+
+
+    function testValue() {
+        let strongPasswordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^\w ])\S{8,20}$/
+        let capsPattern = /[A-Z]/
+        let lowerCasePattern = /[a-z]/
+        let numberPattern = /[0-9]/
+        let symbolPattern = /[^\w ]/
+
+        if (strongPasswordPattern.test(fem.value.trim())) {
+            error.style.color = 'green'
+            error.innerHTML = 'strong password'
+        } else {
+            error.style.color = 'red'
+            if (!capsPattern.test(fem.value.trim())) {
+                error.innerHTML = 'not a strong password, add at least one capital letter'
+            } else if (!lowerCasePattern.test(fem.value.trim())) {
+                error.innerHTML = 'not a strong password,add at least one lowercase letter'
+            } else if (!numberPattern.test(fem.value.trim())) {
+                error.innerHTML = 'not a strong password,add at least one number'
+            }
+            else if (!symbolPattern.test(fem.value.trim())) {
+                error.innerHTML = 'not a strong password, add at least one symbol'
+            } else {
+                error.innerHTML = 'not a strong password, ensure its at least 8 characters'
+            }
+        }
+
+    }
+
+
+
+    function showPic() {
+        let file = picturePicker.files[0]
+
+        if (!file) {
+            alert('please add a file')
+            return
+        }
+
+        if (file.size < 10000) {
+            alert('file is too small')
+            return
+        }
+
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.addEventListener('load', function (ev) {
+            let result = ev.target.result
+            image.src = result
+        })
+
+
+
+
+    }
+
+
+
+    // let newArr = new Array() //[]
+
+
+
+
+
+
+
+
+
+       // \d - digits (0-9)
+    // \D - anything that is not 0-9
+    // \w - wordcharacters(a-z0-9 and _)
+    // \W - symbols, space but no _
+    // \s - whitespace
+    // \S - anything that is not whitespace
+
+    // //08184934974 || +2348164934974
+    // let pattern2 = /^(0||[+]234)([7-9]0||[8-9]1)[0-9]+$/
+    // let sentence = '09184934974'
+    // console.log(pattern2.test(sentence));
+
+    // // anyadikewisdom@gmail.com.ng
+    // let emailPattern = /^[A-Za-z][\w.-]+@[a-zA-Z]+([.](com||ng||org)){1,}$/
+
+    // console.log(emailPattern.test('anyadikewisdom@gmail.com'));
+
+    // // https://facebook.com/
+
+    // let secureUrlPattern = /^https:[/]{2}[a-zA-Z]+[.](com||ng||org)[/]{0,1}$/
+    // console.log(secureUrlPattern.test('https://facebook.com'));
+
+    // //Wisdom123-/:
+    // let strongPasswordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^\w ])\S{8,20}$/
+    // console.log(strongPasswordPattern.test('Aa0%ghdjs'));
+</script>
