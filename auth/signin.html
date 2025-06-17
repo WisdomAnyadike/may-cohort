@@ -55,7 +55,7 @@
               <form id="stripe-login">
                 <div class="field padding-bottom--24">
                   <label for="email">Email</label>
-                  <input type="email" name="email">
+                  <input type="email" name="email" id="email">
                 </div>
                 <div class="field padding-bottom--24">
                   <div class="grid--50-50">
@@ -64,15 +64,16 @@
                       <a href="#">Forgot your password?</a>
                     </div>
                   </div>
-                  <input type="password" name="password">
+                  <input type="password" name="password" id="password">
                 </div>
                 <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
                   <label for="checkbox">
                     <input type="checkbox" name="checkbox"> Stay signed in for a week
                   </label>
                 </div>
+
                 <div class="field padding-bottom--24">
-                  <input type="submit" name="submit" value="Continue">
+                  <input type="button" name="submit" value="Continue" onclick="signInUser(event)">
                 </div>
                 <div class="field">
                   <a class="ssolink" href="#">Use single sign-on (Google) instead</a>
@@ -92,10 +93,56 @@
       </div>
     </div>
   </div>
+
+
+  <!-- <div onclick="runDiv(event)"  style="background-color: red;">
+    <p></p>
+    <span></span>
+    <i>hysjsi</i>
+  </div>
+  <input type="text" value="hskdbms"> -->
 </body>
 
 </html>
 <script>
+  let findUser = JSON.parse(localStorage.getItem('usersDatabase'))
+  function signInUser(ev) {
+    ev.preventDefault();
 
+    console.log(ev);
+    if (!email.value.trim() || !password.value.trim()) {
+      alert("all field are mandatory")
+    }
+    else {
+      let user = findUser.find((user) => {
+        return user.email === email.value.trim()
+      })
+      if (!user) {
+        alert('Try signing up')
+      } else{
+        if (user.password === password.value.trim()){
+          localStorage.setItem('currentUserName', user.name)
+          window.location.href = "dashboard.html"
+        }else {
+          alert('Invalid Email or Password')
+        }
+      }
+    }
+
+  }
+
+
+
+
+  // function wow(params) {
+  //   console.log(params);
+  // }
+
+  // wow('hi')
+
+  // function runDiv(params) {
+  //   console.log(params);
+  //   params.target.nextElementSibling.value = 'wow , magic'
+  // }
 
 </script>

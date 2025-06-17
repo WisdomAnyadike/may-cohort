@@ -18,6 +18,7 @@
     <input type="file" id="picturePicker">
     <img src="" id="image" width="200" height="200" alt="">
 
+    <p id="ptag"> hello </p>
 </body>
 
 </html>
@@ -57,8 +58,9 @@
 
 
 
-    function showPic() {
-        let file = picturePicker.files[0]
+    function showPic(ev) {
+        console.log(ev);
+        let file = ev.target.files[0]
 
         if (!file) {
             alert('please add a file')
@@ -72,22 +74,27 @@
 
         let reader = new FileReader()
         reader.readAsDataURL(file)
-        reader.addEventListener('load', function (ev) {
+        reader.addEventListener('load', run)
+
+
+        function run(ev) {
             let result = ev.target.result
             image.src = result
-        })
-
-
-
+        }
 
     }
 
 
 
     // let newArr = new Array() //[]
+    // let ptag = document.getElementById('ptag')
+
+    // ptag.addEventListener('click', shout)
 
 
-
+    // function shout(ev) {
+    //     console.log('ahhhh', ev);
+    // }
 
 
 
