@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="displayTime">
+
+    </div>
+
+</body>
+
+</html>
+<script>
+
+
+    // 18:06:2025 10:56 AM
+
+    function formatDate(date) {
+        let rawMonth = (date.getMonth() + 1) //6
+        let day = date.getDate() //18
+        let month = rawMonth < 10 ? `0${rawMonth}` : rawMonth
+        let year = date.getFullYear()
+
+        let time = date.toLocaleTimeString() // [ '11' , '54' , '04 AM']     ['3', '54' , '04 AM']
+
+        time = time.split(':')[0].length == 2 
+        ?
+         `${time.slice(0, 5)} ${time.slice(9, 11)}`
+        : 
+          `0${time.slice(0, 4)} ${time.slice(8, 10)}`
+
+
+        return `${day}:${month}:${year} ${time}`
+
+    }
+
+    function display() {
+        displayTime.innerHTML = formatDate(new Date())
+    }
+
+    display()
+
+    setInterval(() => {
+        display()
+    }, 1000);
+
+
+
+
+    // function (params) {
+        
+    // }
+
+</script>
