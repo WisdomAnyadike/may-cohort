@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="api.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+
+
+
+
+
+
+
+</body>
+
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="api.js"></script>
+<script>
+
+    let myDiv = document.body
+    myDiv.innerHTML = 'loading......'
+
+    function fetchData() {
+        fetch('https://dummyjson.com/products').then((res) => { return res.json() }).then((data) => {
+            let productsArr = data.products;
+            console.log(productsArr);
+
+
+            myDiv.innerHTML = ''
+            productsArr.forEach((product, i) => {
+
+                // function returnBrandName(params) {
+                //     if (product.brand) {
+                //         return product.brand
+                //     }
+                //     return "feranmi's brand"
+                // }
+
+
+
+                myDiv.innerHTML += `
+    <div id="make-3D-space" onclick="fetchSingleProduct(${i + 1})">
+                <div id="product-card">
+            <div id="product-front">
+                <div class="shadow"></div>
+                <img width='100%' height="60%" src="${product.images[0]}" alt="" />
+                <div class="image_overlay"></div>
+                <div id="view_details">View details</div>
+                <div class="stats">
+                    <div class="stats-container">
+                        <span class="product_price">$${product.price}</span>
+                        <span class="product_name">${product.title.length > 12 ? product.title.slice(0, 12) + '...' : product.title}</span>
+                        <p>${product.brand ? product.brand : "feranmi's brand"}</p>
+
+                        <div class="product-options">
+                            <strong>SIZES</strong>
+                            <span>XS, S, M, L, XL, XXL</span>
+                            <strong>COLORS</strong>
+                            <div class="colors">
+                                <div class="c-blue"><span></span></div>
+                                <div class="c-red"><span></span></div>
+                                <div class="c-white"><span></span></div>
+                                <div class="c-green"><span></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="product-back">
+                <div class="shadow"></div>
+                <div id="carousel">
+                    <ul>
+                        <li><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/t-shirt-large.png" alt="" />
+                        </li>
+                        <li><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/t-shirt-large2.png" alt="" />
+                        </li>
+                        <li><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/t-shirt-large3.png" alt="" />
+                        </li>
+                    </ul>
+                    <div class="arrows-perspective">
+                        <div class="carouselPrev">
+                            <div class="y"></div>
+                            <div class="x"></div>
+                        </div>
+                        <div class="carouselNext">
+                            <div class="y"></div>
+                            <div class="x"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="flip-back">
+                    <div id="cy"></div>
+                    <div id="cx"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+                
+        `
+
+            });
+
+
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+    fetchData()
+
+
+
+    async function fetchSingleProduct(params) {
+        try {
+            let res = await fetch(`https://dummyjson.com/products/${params}`)
+            let data = await res.json()
+
+            console.log(data);
+            myDiv.innerHTML = ` <div> 
+
+<button onclick="goback()"> go back </button>
+
+
+
+                ${data.description}
+                ${data.title}
+                ${data.category}
+                ${data.reviews[0].comment
+                }
+                
+                </div>`
+
+        } catch (error) {
+            console.log(error);
+        }
+
+
+
+    }
+
+
+    function goback() {
+        fetchData()
+
+    }
+
+    setTimeout(() => {
+        myDiv.innerHTML += `<button id="mybutton"> wow </button>
+
+<button id="mybutton"> lol </button>`
+
+        console.log(document.querySelectorAll('#mybutton'));
+
+
+
+    }, 3000)
+
+
+
+
+
+
+
+
+
+</script>

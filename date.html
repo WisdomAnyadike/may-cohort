@@ -29,11 +29,11 @@
 
         let time = date.toLocaleTimeString() // [ '11' , '54' , '04 AM']     ['3', '54' , '04 AM']
 
-        time = time.split(':')[0].length == 2 
-        ?
-         `${time.slice(0, 5)} ${time.slice(9, 11)}`
-        : 
-          `0${time.slice(0, 4)} ${time.slice(8, 10)}`
+        time = time.split(':')[0].length == 2
+            ?
+            `${time.slice(0, 5)} ${time.slice(9, 11)}`
+            :
+            `0${time.slice(0, 4)} ${time.slice(8, 10)}`
 
 
         return `${day}:${month}:${year} ${time}`
@@ -54,7 +54,18 @@
 
 
     // function (params) {
-        
+
     // }
+
+
+    // let h  = '#'
+
+    // for (let i = 0; i < 6; i++) {
+    //     h += '#'
+    //     // h = 0 + '#'
+    //     console.log(h);
+    // }
+
+    // console.log(h);
 
 </script>
