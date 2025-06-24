@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+    <nav> <button onclick="goToSettings()"> settings </button> <button onclick="logOut()"> log out </button></nav>
+    Welcome <span id="myUser"> loading.... </span>
+</body>
+
+</html>
+<script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBWnozZoRcwQ4CJFFeAlTdofyeeA--bM9k",
+        authDomain: "maychort.firebaseapp.com",
+        projectId: "maychort",
+        storageBucket: "maychort.firebasestorage.app",
+        messagingSenderId: "627357350020",
+        appId: "1:627357350020:web:9fe8e5b4cfd76f59d12ad1"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function goToSettings() {
+        window.location.href = 'settings.html'
+    }
+
+
+    function checksUser(params) {
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/v8/firebase.User
+                var uid = user.uid;
+                console.log(user);
+                myUser.innerHTML = user.displayName ? user.displayName : 'User'
+            } else {
+                window.location.href = 'login.html'
+            }
+        });
+
+    }
+
+    checksUser()
+
+
+    function logOut() {
+        let confirmer = confirm('are you sure ?')
+
+        if (confirmer) {
+            firebase.auth().signOut().then(() => {
+                window.location.href = 'login.html'
+            }).catch((error) => {
+                alert(error.message)
+            });
+        }
+
+    }
+
+
+</script>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="styles/index.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Poppins:wght@300&family=Roboto&display=swap"
+    rel="stylesheet" />
+  <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <!-- section-left-start -->
+
+    <div class="container-left">
+      <div class="wrapper-left">
+        <div class="part-one">
+          <h3>Get started</h3>
+          <p>Lets create your account</p>
+        </div>
+        <div class="inp">
+          <form action="">
+            <label for="" class="email">E-mail </label>
+            <i class="fas fa-envelope envelope"></i>
+            <input class="inp-left" id="email" type="email" placeholder="mhmmd.rezaei4@gmail.com" />
+            <label for="" class="pass">Password </label>
+            <i class="fas fa-lock pass"></i>
+            <input class="inp-left" id="password" type="password" placeholder="8+ characters, 2 numbers" name=""
+              id="" />
+          </form>
+        </div>
+        <div class="buttons">
+          <button onclick="signUp(event)" class="btn-one">Create an account</button>
+          <button class="btn-two">
+            <i class="fab fa-google"></i> Sign up with google
+          </button>
+        </div>
+        <div class="check">
+          <label for="privacy">
+            I read and accept the User Agreement and <br />
+            Privacy Policy.
+            <input id="privacy" type="checkbox" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <div class="down">
+          <p>Already have an account?</p>
+          <a href="pages/login.html"> Log in </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
+<script>
+
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWnozZoRcwQ4CJFFeAlTdofyeeA--bM9k",
+    authDomain: "maychort.firebaseapp.com",
+    projectId: "maychort",
+    storageBucket: "maychort.firebasestorage.app",
+    messagingSenderId: "627357350020",
+    appId: "1:627357350020:web:9fe8e5b4cfd76f59d12ad1"
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  console.log(firebase);
+
+  function signUp(e) {
+    let button = e.target
+    button.innerHTML = 'Loading...'
+    button.disabled = true
+
+
+    auth.createUserWithEmailAndPassword(email.value.trim(), password.value.trim())
+      .then((userCredential) => {
+        // Signed in 
+        var user = userCredential.user;
+        console.log(user);
+        button.innerHTML = 'Create an account'
+        button.disabled = false
+        alert('sign up successful')
+        window.location.href = 'pages/login.html'
+
+        // ...
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        alert(errorMessage)
+        button.innerHTML = 'Create an account'
+        button.disabled = false
+
+        // ..
+      });
+
+
+
+
+  }
+</script>

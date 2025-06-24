@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../styles/index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather&family=Poppins:wght@300&family=Roboto&display=swap"
+        rel="stylesheet" />
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- section-left-start -->
+
+        <div class="container-left">
+            <div class="wrapper-left">
+                <div class="part-one">
+                    <h3>Login to your account</h3>
+
+                </div>
+                <div class="inp">
+                    <form action="">
+                        <label for="" class="email">E-mail </label>
+                        <i class="fas fa-envelope envelope"></i>
+                        <input class="inp-left" id="email" type="email" placeholder="mhmmd.rezaei4@gmail.com" />
+                        <label for="" class="pass">Password </label>
+                        <i class="fas fa-lock pass"></i>
+                        <input class="inp-left" id="password" type="password" placeholder="8+ characters, 2 numbers"
+                            name="" id="" />
+                    </form>
+                </div>
+                <div class="buttons">
+                    <button onclick="logIn(event)" class="btn-one"> Login account</button>
+
+                </div>
+
+                <div class="down">
+                    <p> Don't have an account?</p>
+                    <a href="../index.html"> Sign Up </a>
+                </div>
+            </div>
+        </div>
+        <!-- section-left-end -->
+    </div>
+</body>
+
+</html>
+<script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBWnozZoRcwQ4CJFFeAlTdofyeeA--bM9k",
+        authDomain: "maychort.firebaseapp.com",
+        projectId: "maychort",
+        storageBucket: "maychort.firebasestorage.app",
+        messagingSenderId: "627357350020",
+        appId: "1:627357350020:web:9fe8e5b4cfd76f59d12ad1"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function logIn(ev) {
+        let button = ev.target
+        button.innerHTML = 'Loading...'
+        button.disabled = true
+
+        firebase.auth().signInWithEmailAndPassword(email.value.trim(), password.value.trim())
+            .then((userCredential) => {
+                // Signed in
+                var user = userCredential.user;
+                button.innerHTML = 'Login account'
+                button.disabled = false
+                alert('login successful')
+                window.location.href = 'dashboard.html'
+                // ...
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                alert(errorMessage)
+                button.innerHTML = 'Login account'
+                button.disabled = false
+            });
+    }
+
+
+</script>

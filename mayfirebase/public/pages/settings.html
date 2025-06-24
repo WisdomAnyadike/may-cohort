@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+
+    <input type="text" id="usersname"> <button onclick="updateUsername()"> update username</button>
+</body>
+
+</html>
+<script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBWnozZoRcwQ4CJFFeAlTdofyeeA--bM9k",
+        authDomain: "maychort.firebaseapp.com",
+        projectId: "maychort",
+        storageBucket: "maychort.firebasestorage.app",
+        messagingSenderId: "627357350020",
+        appId: "1:627357350020:web:9fe8e5b4cfd76f59d12ad1"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function checksUser(params) {
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                var uid = user.uid;
+
+            } else {
+                window.location.href = 'login.html'
+            }
+        });
+
+    }
+
+    checksUser()
+
+
+    function updateUsername() {
+        const user = firebase.auth().currentUser;
+
+        if (!usersname.value.trim()) {
+            alert('username field is mandatory')
+        } else if (usersname.value.trim().length < 5) {
+            alert('username is not long enough')
+        } else {
+            user.updateProfile({
+                displayName: usersname.value.trim(),
+
+            }).then(() => {
+                // Update successful
+                // ...
+                alert('success')
+            }).catch((error) => {
+                // An error occurred
+                alert(error.message)
+            });
+        }
+    }
+
+</script>
