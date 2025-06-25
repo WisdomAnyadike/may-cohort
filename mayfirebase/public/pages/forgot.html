@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+ <input type="email" id="email">
+ <button onclick="recover(event)">Recover Password</button>
+</body>
+
+</html>
+<script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBWnozZoRcwQ4CJFFeAlTdofyeeA--bM9k",
+        authDomain: "maychort.firebaseapp.com",
+        projectId: "maychort",
+        storageBucket: "maychort.firebasestorage.app",
+        messagingSenderId: "627357350020",
+        appId: "1:627357350020:web:9fe8e5b4cfd76f59d12ad1"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function recover(ev) {
+        let button = ev.target
+        let emailVal = document.getElementById("email").value.trim()
+        if (!emailVal) {
+            alert("Email input is mandatory!")
+            return
+        }
+        button.innerHTML = 'Loading...'
+        button.disabled = true
+        auth.sendPasswordResetEmail(emailVal)
+  .then(() => {
+    // Password reset email sent!
+    // ..
+    button.innerHTML = 'Recover Password'
+    button.disabled = false
+    alert('success')
+    
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    alert(errorMessage)
+    button.innerHTML = 'Recover Password'
+    button.disabled = false
+
+  });
+    }
+</script>

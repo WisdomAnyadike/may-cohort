@@ -39,6 +39,10 @@
                     </form>
                 </div>
                 <div class="buttons">
+                    <button onclick="ForgotPassword()" class="btn-one"> Forgot Password</button>
+
+                </div>
+                <div class="buttons">
                     <button onclick="logIn(event)" class="btn-one"> Login account</button>
 
                 </div>
@@ -68,6 +72,10 @@
     // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+
+    function ForgotPassword() {
+        window.location.href = 'forgot.html'
+    }
 
     function logIn(ev) {
         let button = ev.target

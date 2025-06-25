@@ -7,11 +7,31 @@
     <title>Document</title>
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-auth-compat.js"></script>
+
+    <style>
+        .error-box {
+            position: fixed;
+            top: 0;
+            right: 0;
+            color: red;
+            background-color: white;
+            width: 200px;
+            height: 100px;
+            box-shadow: 0px 4px 8px 10px rgb(0, 0, 0, 0.2);
+        }
+
+        .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    </style>
 </head>
 
 <body>
+    <input type="text" id="usersname"> <button onclick="updateUsername(event)"> update username</button>
 
-    <input type="text" id="usersname"> <button onclick="updateUsername()"> update username</button>
+    <button>Verify your email</button>
 </body>
 
 </html>
@@ -30,15 +50,20 @@
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+
+
     function checksUser(params) {
 
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 var uid = user.uid;
+                console.log(user)
 
+                usersname.value = user.displayName || ''
             } else {
                 window.location.href = 'login.html'
             }
+
         });
 
     }
@@ -46,7 +71,9 @@
     checksUser()
 
 
-    function updateUsername() {
+    function updateUsername(ev) {
+        let button = ev.target
+
         const user = firebase.auth().currentUser;
 
         if (!usersname.value.trim()) {
@@ -54,6 +81,9 @@
         } else if (usersname.value.trim().length < 5) {
             alert('username is not long enough')
         } else {
+            button.innerHTML = 'loading...'
+            button.disabled = true
+
             user.updateProfile({
                 displayName: usersname.value.trim(),
 
@@ -61,11 +91,37 @@
                 // Update successful
                 // ...
                 alert('success')
+                button.innerHTML = 'update username'
+                button.disabled = false
             }).catch((error) => {
                 // An error occurred
                 alert(error.message)
+                button.innerHTML = 'update username'
+                button.disabled = false
             });
         }
+
     }
+
+    function closer() {
+        document.getElementById('closeDIV').style.display = 'none'
+    }
+
+    function displayError() {
+        let user = auth.currentUser
+        document.body.innerHTML += user.emailVerified ? '' : `
+        <div id="closeDIV" class="error-box">
+            <button onclick="closer()" class="close">Close</button>
+            <span id="verifyText"> please verify your email</span>
+        </div>
+        ` 
+    }
+
+
+
+
+    setTimeout(() => {
+        displayError()
+    }, 2000);
 
 </script>

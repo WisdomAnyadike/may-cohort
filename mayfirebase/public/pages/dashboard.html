@@ -7,11 +7,56 @@
     <title>Document</title>
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-auth-compat.js"></script>
+    <link rel="stylesheet" href="../styles/dash.css">
 </head>
 
 <body>
-    <nav> <button onclick="goToSettings()"> settings </button> <button onclick="logOut()"> log out </button></nav>
-    Welcome <span id="myUser"> loading.... </span>
+    <section class="navigation">
+        <div class="nav-container">
+            <div class="brand">
+                <a href="#!">Logo</a>
+            </div>
+            <nav>
+                <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
+                <ul class="nav-list">
+                    <li>
+                        <a href="#!">Home</a>
+                    </li>
+                    <li>
+                        <a href="#!">About</a>
+                    </li>
+                    <li>
+                        <a href="#!">Services</a>
+                        <ul class="navbar-dropdown">
+                            <li>
+                                <a href="#!">Sass</a>
+                            </li>
+                            <li>
+                                <a href="#!">Less</a>
+                            </li>
+                            <li>
+                                <a href="#!">Stylus</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#!">Portfolio</a>
+                    </li>
+                    <li>
+                        <a href="#!" onclick="goToSettings()"> Settings </a>
+
+                    </li>
+                    <li>
+                        <a href="#!" onclick="logOut()"> Log Out </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+   
+
+    <h1 style="padding: 20px;"> Welcome <span id="myUser"> loading.... </span></h1>
 </body>
 
 </html>
