@@ -20,6 +20,17 @@
             box-shadow: 0px 4px 8px 10px rgb(0, 0, 0, 0.2);
         }
 
+        .box {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            background-color: white;
+            width: 200px;
+            height: 100px;
+            box-shadow: 0px 4px 8px 10px rgb(0, 0, 0, 0.2);
+        }
+
         .close {
             position: absolute;
             top: 0;
@@ -29,9 +40,25 @@
 </head>
 
 <body>
-    <input type="text" id="usersname"> <button onclick="updateUsername(event)"> update username</button>
+    <div id="forError">
 
+    </div>
+    <div id="forImage">
+
+    </div>
+    <br>
+    <br>
+    <input type="file" accept=".png,.jpg,.jpeg" onchange="pickPicture(event)">
+    <br>
+    <br>
+
+    <input type="text" id="usersname"> <br> <br> <button onclick="updateUsername(event)"> update username</button>
+    <br> <br>
     <button>Verify your email</button>
+
+    <div class="box" id="loader">
+
+    </div>
 </body>
 
 </html>
@@ -53,13 +80,19 @@
 
 
     function checksUser(params) {
-
+        displayImg(false)
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 var uid = user.uid;
                 console.log(user)
-
+                displayImg(true)
                 usersname.value = user.displayName || ''
+                forError.innerHTML += user.emailVerified ? '' : `
+        <div id="closeDIV" class="error-box">
+            <button onclick="closer()" class="close">Close</button>
+            <span id="verifyText"> please verify your email</span>
+        </div>
+        `
             } else {
                 window.location.href = 'login.html'
             }
@@ -69,6 +102,19 @@
     }
 
     checksUser()
+
+
+    function displayImg(bool) {
+        if (bool) {
+            forImage.innerHTML = `<img src="" id="profilePic" width="150" height="150" style="border-radius: 50%;" alt="">`
+            let user = auth.currentUser
+            console.log(user);
+            profilePic.src = user.photoURL || 'https://i.pinimg.com/236x/08/35/0c/08350cafa4fabb8a6a1be2d9f18f2d88.jpg'
+            return
+        }
+
+        forImage.innerHTML = 'loading image...'
+    }
 
 
     function updateUsername(ev) {
@@ -107,21 +153,69 @@
         document.getElementById('closeDIV').style.display = 'none'
     }
 
-    function displayError() {
-        let user = auth.currentUser
-        document.body.innerHTML += user.emailVerified ? '' : `
-        <div id="closeDIV" class="error-box">
-            <button onclick="closer()" class="close">Close</button>
-            <span id="verifyText"> please verify your email</span>
-        </div>
-        ` 
+
+
+
+
+
+
+    function pickPicture(ev) {
+        showSuccess()
+        let file = ev.target.files[0]
+        if (!file) {
+            alert('please attach a file')
+        }
+
+        let formData = new FormData()
+        formData.append('file', file)
+        formData.append('upload_preset', 'firebaseimage')
+
+        fetch('https://api.cloudinary.com/v1_1/anyacodes/image/upload', {
+            method: 'POST',
+            body: formData
+        }).then((res) => res.json()).then((data) => {
+            console.log(data)
+            let user = auth.currentUser
+            user.updateProfile({
+                photoURL: data.secure_url
+            }).then(() => {
+                profilePic.src = data.secure_url
+                alert('success')
+                showSuccess(true)
+            }).catch((error) => {
+                alert(error.message)
+                showSuccess(false)
+            });
+        }).catch((err) => {
+            alert(err.message)
+            showSuccess(false)
+        })
+
     }
 
 
+    function showSuccess(params = '') {
+        if (params === '') {
+            loader.innerHTML = 'loading....'
+            loader.style.color = 'green'
+            loader.style.display = 'block'
+            return
+        }
 
+        if (params) {
+            loader.innerHTML = 'success'
+            loader.style.color = 'green'
+            loader.style.display = 'block'
+        } else {
+            loader.innerHTML = 'failed'
+            loader.style.color = 'red'
+            loader.style.display = 'block'
+        }
 
-    setTimeout(() => {
-        displayError()
-    }, 2000);
+        setTimeout(() => {
+            loader.innerHTML = ''
+            loader.style.display = 'none'
+        }, 3000);
 
+    }
 </script>
