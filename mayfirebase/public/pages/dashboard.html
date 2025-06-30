@@ -7,7 +7,9 @@
     <title>Document</title>
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-database-compat.js"></script>
     <link rel="stylesheet" href="../styles/dash.css">
+    <link rel="stylesheet" href="../styles/messenger.css">
 </head>
 
 <body>
@@ -54,9 +56,64 @@
         </div>
     </section>
 
-   
+
 
     <h1 style="padding: 20px;"> Welcome <span id="myUser"> loading.... </span></h1>
+
+
+
+    <div class="app">
+        <div class="nav">
+            <svg onclick="setState('home')" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 447.243 447.243"
+                style="width:20px;" xml:space="preserve" fill="currentColor">
+                <g>
+                    <g>
+                        <path d="M420.361,192.229c-1.83-0.297-3.682-0.434-5.535-0.41H99.305l6.88-3.2c6.725-3.183,12.843-7.515,18.08-12.8l88.48-88.48
+                  c11.653-11.124,13.611-29.019,4.64-42.4c-10.441-14.259-30.464-17.355-44.724-6.914c-1.152,0.844-2.247,1.764-3.276,2.754
+                  l-160,160C-3.119,213.269-3.13,233.53,9.36,246.034c0.008,0.008,0.017,0.017,0.025,0.025l160,160
+                  c12.514,12.479,32.775,12.451,45.255-0.063c0.982-0.985,1.899-2.033,2.745-3.137c8.971-13.381,7.013-31.276-4.64-42.4
+                  l-88.32-88.64c-4.695-4.7-10.093-8.641-16-11.68l-9.6-4.32h314.24c16.347,0.607,30.689-10.812,33.76-26.88
+                  C449.654,211.494,437.806,195.059,420.361,192.229z" />
+                    </g>
+                </g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+            </svg>
+
+            <div>Sadhin</div>
+        </div>
+        <div class="messages_holder" id="messageholder">
+            <!-- <div class="message_wraper ">
+                <span class="user user-1">J</span>
+                <div class="message"> hello world!</div>
+            </div>
+            <div id="you" class="message_wraper">
+                <span class="user user-2">S</span>
+                <div class="message"> hello world!</div>
+            </div> -->
+
+        </div>
+
+        <p class="envolope">
+            <input type="text" placeholder="Aaa" onkeyup="sendMssg(event)" class="inp" id="input" name="message">
+            <button type="button" class="sub-btn" onclick="sendMessage()"> Sent</button>
+        </p>
+    </div>
+
 </body>
 
 </html>
@@ -66,6 +123,7 @@
         apiKey: "AIzaSyBWnozZoRcwQ4CJFFeAlTdofyeeA--bM9k",
         authDomain: "maychort.firebaseapp.com",
         projectId: "maychort",
+        databaseURL: "https://maychort-default-rtdb.firebaseio.com",
         storageBucket: "maychort.firebasestorage.app",
         messagingSenderId: "627357350020",
         appId: "1:627357350020:web:9fe8e5b4cfd76f59d12ad1"
@@ -74,6 +132,8 @@
     // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+    const database = firebase.database();
+    let chatIndex
 
     function goToSettings() {
         window.location.href = 'settings.html'
@@ -112,5 +172,88 @@
 
     }
 
+
+    function sendMessage() {
+
+        if (!auth.currentUser.displayName) {
+            alert('please update your username in settings')
+            window.location.href = 'settings.html'
+            return
+        }
+
+        if (!input.value.trim()) {
+            alert('please include a message')
+            return
+        }
+
+        if (typeof (chatIndex) !== "number" || chatIndex < 0) {
+            alert('cannot send a message at the moment , try again')
+            return
+        }
+
+        database.ref('chats/' + chatIndex).set({
+            sender: auth.currentUser.displayName,
+            message: input.value.trim(),
+            time: new Date().toLocaleTimeString()
+        }).then(() => {
+            input.value = ''
+        }).catch((err) => {
+            alert(err.message)
+        })
+
+    }
+
+
+    function displayMessages() {
+        messageholder.innerHTML = 'loading...'
+        database.ref('chats').on('value', (snapshot) => {
+            const data = snapshot.val() || [];
+            chatIndex = data.length
+
+            messageholder.innerHTML = ''
+            data.forEach((chat, i) => {
+                let designId = chat.sender === auth.currentUser.displayName ? 'you' : ''
+                let designClass = chat.sender === auth.currentUser.displayName ? 'user-2' : 'user-1'
+
+                messageholder.innerHTML += ` <div ondblclick="deleteMssg(event , '${chat.sender}' , '${i}')"  id='${designId}'  class="message_wraper" >
+                <span class="user ${designClass}"> ${chat.sender[0]}</span>
+                <div class="message"> ${chat.message}
+                    
+                    <p style="position: absolute; bottom:-5px; right:4px; color:black; font-size:12px;"> ${chat.time}</p>
+                    </div>
+               
+            </div>`
+
+            });
+
+        });
+    }
+
+    displayMessages()
+
+    function sendMssg(ev) {
+        ev.preventDefault()
+        console.log(ev.code);
+        if (ev.code === 'Enter') {
+            sendMessage()
+        }
+
+    }
+
+    function deleteMssg(ev, sender, index) {
+        if (sender !== auth.currentUser.displayName) {
+            alert('unauthorized')
+        } else {
+            let confirmer = confirm('are you sure you want to delete this message?')
+
+            if (confirmer) {
+                database.ref('chats/' + index).remove().then().catch((err) => {
+                    alert(err.message)
+                })
+            }
+
+        }
+
+    }
 
 </script>
