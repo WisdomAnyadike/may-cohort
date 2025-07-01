@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="section">
+
+
+
+
+
+    </div>
+
+</body>
+
+</html>
+<script>
+    let index = 0
+    let score = []
+    const quizData = [
+        {
+            question: "What is the capital of Alabama?",
+            options: [
+                "Jackson",
+                "Montgomery",
+                "Birmingham",
+                "Atlanta"],
+            answer: 1
+        },
+        {
+            question: "What is the capital of Alaska?",
+            options: [
+                "Anchorage",
+                "Fairbanks",
+                "Juneau",
+                "Sitka"
+            ],
+            answer: 2
+        },
+        {
+            question: "What is the capital of Arizona?",
+            options: [
+                "Phoenix",
+                "Flagstaff",
+                "Mesa",
+                "Tucson"
+            ],
+            answer: 0
+        },
+
+    ];
+
+    function displayQuestions(isdisabled, button = '<button onclick="next(event)">next </button>') {
+        section.innerHTML = `
+        <h1> Question : ${quizData[index].question} </h1>
+        <div id="forOptions">
+         
+        </div>
+        <div> <button id="prevbutton" onclick="prev(event)" > previous </button>   ${button} </div>`
+        prevbutton.disabled = isdisabled
+        displayOptions()
+
+    }
+
+    displayQuestions(true)
+
+    function displayOptions() {
+        forOptions.innerHTML = ''
+        quizData[index].options.forEach((option, i) => {
+            forOptions.innerHTML += ` <p>  <input type="radio" onchange="checkAnswer(${i})" name="options" />  ${quizData[index].options[i]} </p> `
+        })
+    }
+
+
+    function next(e) {
+        if (index === quizData.length - 2) {
+            index++
+            displayQuestions(false, '<button onclick="submit()"> submit </button>')
+            return
+        }
+        index++
+        displayQuestions(false)
+        console.log(index);
+    }
+
+    function prev(e) {
+        if (index === 1) {
+            index--
+            displayQuestions(true)
+            score.pop()
+            console.log(score);
+            return
+        }
+
+        index--
+        displayQuestions(false)
+        score.pop()
+        console.log(score);
+
+    }
+
+
+    function checkAnswer(i) {
+        console.log(i);
+        if (quizData[index].answer === i) {
+            score.splice(index, 1, 5)
+            console.log(score);
+            return
+        }
+
+        console.log('wrong')
+        score.splice(index, 1, 0)
+        console.log(score);
+    }
+
+    function submit() {
+        let confirmer = confirm('are you sure you want to submit?')
+        if (confirmer) {
+            let usersScore = score.reduce((a, c) => a + c, 0)
+            section.innerHTML = ` you scored  ${usersScore}/15  
+            <button onclick="retake()"> retake test </button>
+            
+            `
+
+        }
+
+
+    }
+
+    function retake() {
+        index = 0
+        score = []
+        displayQuestions(true)
+
+    }
+
+
+</script>
