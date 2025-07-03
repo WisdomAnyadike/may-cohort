@@ -211,15 +211,15 @@
             chatIndex = data.length
 
             messageholder.innerHTML = ''
-            data.forEach((chat, i) => {
-                let designId = chat.sender === auth.currentUser.displayName ? 'you' : ''
-                let designClass = chat.sender === auth.currentUser.displayName ? 'user-2' : 'user-1'
+            data.forEach(({message , time , sender}, i) => {
+                let designId = sender === auth.currentUser.displayName ? 'you' : ''
+                let designClass = sender === auth.currentUser.displayName ? 'user-2' : 'user-1'
 
-                messageholder.innerHTML += ` <div ondblclick="deleteMssg(event , '${chat.sender}' , '${i}')"  id='${designId}'  class="message_wraper" >
-                <span class="user ${designClass}"> ${chat.sender[0]}</span>
-                <div class="message"> ${chat.message}
+                messageholder.innerHTML += ` <div ondblclick="deleteMssg(event , '${sender}' , '${i}')"  id='${designId}'  class="message_wraper" >
+                <span class="user ${designClass}"> ${sender[0]}</span>
+                <div class="message"> ${message}
                     
-                    <p style="position: absolute; bottom:-5px; right:4px; color:black; font-size:12px;"> ${chat.time}</p>
+                    <p style="position: absolute; bottom:-5px; right:4px; color:black; font-size:12px;"> ${time}</p>
                     </div>
                
             </div>`
